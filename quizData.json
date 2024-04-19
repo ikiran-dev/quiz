@@ -1,0 +1,42 @@
+[
+  {
+    "question": "What does npm stand for?",
+    "options": [
+      "Node Package Manager",
+      "Node Process Manager",
+      "New Project Manager",
+      "None of the above"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "question": "Which method in Node.js is used to include modules?",
+    "options": ["require()", "import()", "module()", "use()"],
+    "correctIndex": 0
+  },
+  {
+    "question": "What is the event-driven architecture of Node.js based on?",
+    "options": ["Callbacks", "Promises", "Generators", "Async/Await"],
+    "correctIndex": 0
+  },
+  {
+    "question": "Which function is used to handle asynchronous operations in Node.js?",
+    "options": [
+      "Callback function",
+      "Promise",
+      "Async function",
+      "All of the above"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "question": "What is the purpose of the 'fs' module in Node.js?",
+    "options": [
+      "To perform file system operations",
+      "To create HTTP servers",
+      "To handle databases",
+      "To render HTML templates"
+    ],
+    "correctIndex": 0
+  }
+]

@@ -1,0 +1,80 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node.js Quiz</title>
+</head>
+
+<body>
+    <h1>Node.js Quiz</h1>
+    <div id="quiz-container"></div>
+    <button onclick="submitAnswers()">Submit Answers</button>
+    <div id="result"></div>
+
+    <script>
+        async function fetchQuiz() {
+            const response = await fetch('/quiz');
+            const data = await response.json();
+            const quizContainer = document.getElementById('quiz-container');
+
+            data.forEach((question, index) => {
+                const options = question.options.map((option, i) => `
+                    <input type="radio" name="question${index}" value="${i}">
+                    <label>${option}</label><br>
+                `).join('');
+
+                quizContainer.innerHTML += `
+                    <div>
+                        <h3>${index + 1}. ${question.question}</h3>
+                        ${options}
+                    </div>
+                `;
+            });
+        }
+
+        async function submitAnswers() {
+            const answers = [];
+            const quizForm = document.querySelectorAll('#quiz-container input[type="radio"]');
+            quizForm.forEach(input => {
+                if (input.checked) {
+                    answers.push(parseInt(input.value));
+                }
+            });
+
+            const response = await fetch('/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ answers: answers })
+            });
+
+            const result = await response.json();
+            displayResult(result);
+        }
+
+        function displayResult(result) {
+            const resultContainer = document.getElementById('result');
+            resultContainer.innerHTML = `
+                <h2>Your Score: ${result.score}/${result.feedback.length}</h2>
+                <h3>Feedback:</h3>
+            `;
+
+            result.feedback.forEach((feedback, index) => {
+                const message = feedback.correct ? 'Correct!' : `Incorrect. Correct answer: ${feedback.correctIndex + 1}`;
+                resultContainer.innerHTML += `<p>${index + 1}. ${message}</p>`;
+            });
+
+            const correctCount = result.feedback.filter(feedback => feedback.correct).length;
+            resultContainer.innerHTML += `<p>You got ${correctCount} correct answers out of ${result.feedback.length}.</p>`;
+        }
+
+        fetchQuiz();
+    </script>
+</body>
+
+</html>
